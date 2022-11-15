@@ -10,54 +10,74 @@ app.use(bodyParser.urlencoded({
 const mongoose = require('mongoose');
 
 // connect to the database
-mongoose.connect('mongodb://localhost:27017/hackathon', {
+mongoose.connect('mongodb://localhost:27017/journal', {
   useUnifiedTopology: true,
   useNewUrlParser: true
 });
 
-const personSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
+const postSchema = new mongoose.Schema({
+  date: String,
+  title: String,
+  entry: String,
 });
 
-personSchema.virtual('id')
+postSchema.virtual('id')
   .get(function() {
     return this._id.toHexString();
   });
   
-personSchema.set('toJSON', {
+postSchema.set('toJSON', {
   virtuals: true
 });
 
-const Person = mongoose.model('Person', personSchema);
+const Post = mongoose.model('Post', postSchema);
 
-app.get('/api/persons', async (req, res) => {
+app.get('/cp4-api/posts', async (req, res) => {
   try {
-    let persons = await Person.find();
-    res.send({persons: persons});
+    let posts = await Post.find();
+    res.send({posts: posts});
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-app.post('/api/persons', async (req, res) => {
-    const person = new Person({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName
+app.post('/cp4-api/posts', async (req, res) => {
+    const post = new Post({
+      date: req.body.date,
+      title: req.body.title,
+      entry: req.body.entry
   });
   try {
-    await person.save();
-    res.send({person:person});
+    await post.save();
+    res.send({post:post});
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
 
-app.delete('/api/persons/:id', async (req, res) => {
+app.patch('/cp4-api/posts/:id', async (req, res) => {
+  try {  
+    let post = new Post({
+      date: req.body.date,
+      title: req.body.title,
+      entry: req.body.entry
+    })
+    await Post.deleteOne({
+      _id: req.params.id
+    })
+    await post.save()
+    res.send({post:post});
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+})
+
+app.delete('/cp4-api/posts/:id', async (req, res) => {
   try {
-    await Person.deleteOne({
+    await Post.deleteOne({
       _id: req.params.id
     });
     res.sendStatus(200);
@@ -67,4 +87,4 @@ app.delete('/api/persons/:id', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Server listening on port 3000!'));
+app.listen(3002, () => console.log('Server listening on port 3002!'));

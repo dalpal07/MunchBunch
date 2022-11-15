@@ -1,10 +1,65 @@
+body {
+  background-color:lightblue;
+  background-image: repeating-linear-gradient(-45deg, rgba(255,255,255, 0.1), rgba(255,255,255, 0.1) 1px, transparent 1px, transparent 6px);
+}
+
+footer {
+  margin-left: 2em;
+  margin-bottom: 2em;
+}
+
+.white {
+  background-color:white;
+}
+
+.blue {
+  background-color: lightblue;
+}
+
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.top-edit {
+  font-size: 2em;
+  margin-right: 1em;
+}
+
+textarea {
+  resize: none;
+  width: 70%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.titleEdit {
+  width:50%;
+}
+
+.jTitle {
+  margin-left: 1em;
+}
+
+.top-content {
+  margin-left:2em;
+}
+
+.post {
+  margin:2em;
+  border: 1px solid black;
+  padding:1em;
+  position: relative;
+}
+
+.edit {
+  position:absolute;
+  top:1em;
+  right:1em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
